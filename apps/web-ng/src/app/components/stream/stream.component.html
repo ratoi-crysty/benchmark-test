@@ -1,0 +1,11 @@
+<div>Stream component</div>
+<div *ngIf="value$ | async as value">Tralalal {{value}}</div>
+<div>
+  <button (click)="increment()">Increment</button>
+</div>
+<button *ngIf="started$ | async as started"
+        (click)="toggle(started.value)">{{started.value ? 'Stop updates' : 'Start updates'}}</button>
+<div *ngIf="list$ | async as list">
+  <benchmark-test-row *ngFor="let id of list; trackBy: trackBy" [id]="id"></benchmark-test-row>
+  {{log}}
+</div>

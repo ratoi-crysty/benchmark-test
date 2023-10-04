@@ -1,0 +1,7 @@
+<div *ngIf="row$ | async as row">
+  <div class="name">{{row.name}}</div>
+  <div class="cols">
+    <benchmark-test-col class="col" *ngFor="let col of row.cols" [id]="col"></benchmark-test-col>
+  </div>
+  {{log}}
+</div>

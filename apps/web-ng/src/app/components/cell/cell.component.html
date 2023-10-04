@@ -1,0 +1,4 @@
+<div *ngIf="cell$ | async as cell" (click)="updateCell(cell.id)">
+  {{cell.value}}
+</div>
+{{log}}
