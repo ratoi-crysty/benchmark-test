@@ -1,8 +1,9 @@
-<div *ngIf="col$ | async as col">
+<div *rxIf="col$; let col">
   <div class="name">{{col.name}}</div>
 
   <div class="cells">
-    <benchmark-test-cell class="cell" *ngFor="let cell of col.cells" [id]="cell"></benchmark-test-cell>
+    <benchmark-test-cell
+      class="cell" *rxFor="let cell of col.cells; trackBy: trackBy"
+      [id]="cell"></benchmark-test-cell>
   </div>
-  {{log}}
 </div>

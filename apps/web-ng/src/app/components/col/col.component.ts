@@ -20,8 +20,7 @@ export class ColComponent {
   constructor(protected stream: StreamService) {
   }
 
-  protected get log() {
-    console.log('Col check bind');
-    return 'Col';
+  protected trackBy(_index: number, id: number): number {
+    return id;
   }
 }

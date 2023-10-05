@@ -20,8 +20,7 @@ export class RowComponent {
   constructor(protected stream: StreamService) {
   }
 
-  protected get log() {
-    console.log('Row check bind');
-    return 'Row';
+  protected trackBy(_index: number, id: number): number {
+    return id;
   }
 }

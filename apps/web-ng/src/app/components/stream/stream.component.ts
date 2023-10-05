@@ -14,7 +14,6 @@ export class StreamComponent implements OnInit, OnDestroy {
 
   protected list$: Observable<number[]>;
   protected started$: Observable<{ value: boolean }>;
-  protected value$: Observable<number> = this.state.select('value');
 
   constructor(protected stream: StreamService) {
     this.state.set({ value: 1 });
@@ -30,12 +29,6 @@ export class StreamComponent implements OnInit, OnDestroy {
     this.stream.clear();
   }
 
-  protected increment() {
-    setTimeout(() => {
-      this.state.set(({ value }) => ({ value: value + 1 }));
-    }, 1000);
-  }
-
   protected toggle(status: boolean) {
     this.state.set(({ value }) => ({ value: value + 1 }));
 
@@ -44,11 +37,6 @@ export class StreamComponent implements OnInit, OnDestroy {
     } else {
       this.stream.start();
     }
-  }
-
-  protected get log() {
-    console.log('Stream check bind');
-    return 'Stream';
   }
 
   protected trackBy(id: number): number {

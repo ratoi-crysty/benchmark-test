@@ -7,9 +7,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-
-  protected get log() {
-    console.log('App check bind');
-    return 'App';
-  }
 }

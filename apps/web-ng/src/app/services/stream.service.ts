@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CellModel, ColModel, ImmutableStream, RowModel, StreamData } from '@benchmark-test/stream';
+import { RxState } from '@rx-angular/state';
+import { selectSlice } from '@rx-angular/state/selections';
 
 @Injectable({
   providedIn: 'root',
@@ -10,35 +12,39 @@ export class StreamService {
     rows: 100,
     cols: 5,
     cells: 3,
-    batchSize: 1,
-    interval: 2000,
+    batchSize: 50,
+    interval: 100,
   });
+  protected readonly started = new RxState<{ value: boolean }>();
+  protected readonly data = new RxState<StreamData>();
   protected unsubscribe?: () => void;
-  protected started$ = new BehaviorSubject(false);
 
-  protected readonly data$ = new BehaviorSubject<StreamData>(this.stream.getData());
+  constructor() {
+    this.data.set(this.stream.getData());
+    this.started.set({ value: false });
+  }
 
   init() {
-    this.unsubscribe = this.stream.listen((data) => this.data$.next(data));
+    this.unsubscribe = this.stream.listen((data) => this.data.set(data));
   }
 
   start() {
-    this.started$.next(true);
+    this.started.set({ value: true });
     this.stream.start();
   }
 
   stop() {
-    this.started$.next(false);
+    this.started.set({ value: false });
     this.stream.stop();
   }
 
   clear() {
-    this.stream.stop();
+    this.stop();
     this.unsubscribe?.();
   }
 
   getStarted(): Observable<boolean> {
-    return this.started$.asObservable();
+    return this.started.select('value');
   }
 
   updateCell(id: number) {
@@ -46,46 +52,23 @@ export class StreamService {
   }
 
   getStartedValue(): boolean {
-    return this.started$.getValue();
+    return this.started.get('value');
   }
 
   getList(): Observable<number[]> {
-    return this.data$.asObservable().pipe(
-      map(({ list }) => list),
-      distinctUntilChanged(),
-      tap(() => {
-        console.log('*******************List changed!');
-      })
-    );
+    return this.data.select('list');
   }
 
   getRow(id: number): Observable<RowModel | undefined> {
-    return this.data$.asObservable().pipe(
-      map(({ sets }): RowModel => sets.rows[id]),
-      distinctUntilChanged(),
-      tap(() => {
-        console.log(`================Row ${id} changed!`);
-      })
-    );
+    return this.data.select(selectSlice(['sets']), map(({ sets }) => sets.rows[id]));
   }
 
   getCol(id: number): Observable<ColModel | undefined> {
-    return this.data$.asObservable().pipe(
-      map(({ sets }): ColModel => sets.cols[id]),
-      distinctUntilChanged(),
-      tap(() => {
-        console.log(`-------------Col ${id} changed!`);
-      })
-    );
+    return this.data.select(selectSlice(['sets']), map(({ sets }) => sets.cols[id]));
+
   }
 
   getCell(id: number): Observable<CellModel | undefined> {
-    return this.data$.asObservable().pipe(
-      map(({ sets }): CellModel => sets.cells[id]),
-      distinctUntilChanged(),
-      tap(() => {
-        console.log(`+++++++++++++++++Cell ${id} changed!`);
-      })
-    );
+    return this.data.select(selectSlice(['sets']), map(({ sets }) => sets.cells[id]));
   }
 }

@@ -19,16 +19,7 @@ export class CellComponent {
 
   constructor(protected stream: StreamService) {}
 
-  protected get log() {
-    console.log('Cell check bind');
-    return 'Cell';
-  }
-
   protected updateCell(id: number) {
-    console.log('Update cell', id);
-    setTimeout(() => {
-      console.log('Update cell');
-      this.stream.updateCell(id);
-    }, 1000);
+    this.stream.updateCell(id);
   }
 }

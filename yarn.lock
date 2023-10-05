@@ -2705,6 +2705,14 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@rx-angular/cdk@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@rx-angular/cdk/-/cdk-16.0.0.tgz#30635b2e8aa40ad9b8ff68b1c845cadad8b3ab65"
+  integrity sha512-/phlUZWvFoH67DHlKwVzUIoN3xJQIKTiyuOkVdknb6NhS1ofrEWF1YY0oPD0Cf5kCjug9qIJo7frrhgTwslTxQ==
+  dependencies:
+    ng-morph "^2.2.3"
+    tslib "^2.4.1"
+
 "@rx-angular/state@^16.0.0":
   version "16.0.0"
   resolved "https://registry.yarnpkg.com/@rx-angular/state/-/state-16.0.0.tgz#f20bfe12d9df47602e8932977fd926a3a732ae41"

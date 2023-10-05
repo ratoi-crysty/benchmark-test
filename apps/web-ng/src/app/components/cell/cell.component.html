@@ -1,4 +1,3 @@
-<div *ngIf="cell$ | async as cell" (click)="updateCell(cell.id)">
+<div *rxIf="cell$; let cell" (click)="updateCell(cell.id)">
   {{cell.value}}
 </div>
-{{log}}

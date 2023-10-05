@@ -3,8 +3,10 @@ import { CellModel, ColModel, ImmutableStream, RowModel, StreamData } from '@ben
 import { useCallback } from 'react';
 
 export interface StreamStoreActions {
+  init: () => void;
   start: () => void;
   stop: () => void;
+  clear: () => void;
 }
 
 export interface StreamStoreState {
@@ -13,13 +15,13 @@ export interface StreamStoreState {
 }
 
 export const useStreamStore: UseBoundStore<StoreApi<StreamStoreState>> = create<StreamStoreState>(
-  (setState): StreamStoreState => {
+  (setState, getState): StreamStoreState => {
     const stream = new ImmutableStream({
       rows: 100,
       cols: 5,
       cells: 3,
-      batchSize: 1,
-      interval: 2000,
+      batchSize: 50,
+      interval: 100,
     });
 
     const updateData = (data: StreamData) => setState({ data });
@@ -28,12 +30,17 @@ export const useStreamStore: UseBoundStore<StoreApi<StreamStoreState>> = create<
     return {
       data: stream.getData(),
       actions: {
-        start: () => {
+        init: () => {
           unsubscribe = stream.listen(updateData);
+        },
+        start: () => {
           stream.start();
         },
         stop: () => {
           stream.stop();
+        },
+        clear: () => {
+          getState().actions.stop();
           unsubscribe?.();
         },
       },

@@ -4,8 +4,6 @@ import { StreamPatch } from './stream.types';
 
 export class ImmutableStream extends Stream {
   protected applyPatch(patches: StreamPatch[]): void {
-    console.log('Apply patch', patches);
-
     const newCells = patches.reduce((acc: Record<number, CellModel>, patch: StreamPatch): Record<number, CellModel> => {
       acc[patch.cell] = {
         ...this.data.sets.cells[patch.cell],
