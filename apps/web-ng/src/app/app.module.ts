@@ -11,21 +11,16 @@ import { RxIf } from '@rx-angular/template/if';
 import { RxFor } from '@rx-angular/template/for';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RowComponent,
-    StreamComponent,
-    ColComponent,
-    CellComponent,
-  ],
   imports: [BrowserModule, RxLet, RxIf, RxFor],
-  providers: [{
-    provide: RX_RENDER_STRATEGIES_CONFIG,
-    useValue: {
-      parent: false, // this applies to all RxLets
+  declarations: [AppComponent, RowComponent, StreamComponent, ColComponent, CellComponent],
+  providers: [
+    {
+      provide: RX_RENDER_STRATEGIES_CONFIG,
+      useValue: {
+        parent: false, // this applies to all RxLets
+      },
     },
-  }],
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
